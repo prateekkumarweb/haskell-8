@@ -3,7 +3,7 @@ module Rendering where
 import Data.Array
 
 import Graphics.Gloss
-
+import Game
 
 screenWidth :: Int
 screenWidth = 600
@@ -66,7 +66,7 @@ boardGrid =
        color (makeColorI 255 255 0 200) ( polygon [(280,560),(360,560),(360,520),(320,520),(320,360),(280,360)]),
        tiles
       ]
-gameAsPicture::Picture->Picture
+gameAsPicture::Game->Picture
 
 gameAsPicture p = translate (fromIntegral screenWidth * (-0.5))
                                (fromIntegral screenHeight * (-0.5))
