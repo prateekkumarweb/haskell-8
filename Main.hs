@@ -7,13 +7,10 @@ import Graphics.Gloss.Data.Color
 
 import Rendering
 import Game
-
+import Logic
 
 window = InWindow "Functional" (screenWidth, screenHeight) (100, 100)
 backgroundColor = makeColor 255 255 255 128
-
-
-transformGame _ game = game
 
 main :: IO ()
 main = play window backgroundColor 30 initialGame gameAsPicture transformGame (const id)
