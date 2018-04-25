@@ -47,6 +47,12 @@ tiles =
   verticalLines
   ]
 
+hpiece :: Picture
+hpiece = color (makeColorI 0 0 100 200) ( circleSolid 15)
+
+compiece :: Picture
+compiece = color (makeColorI 0 100 0 200) ( circleSolid 15)
+
 
 boardGrid :: Picture
 boardGrid =
@@ -65,10 +71,30 @@ boardGrid =
        color (makeColorI 0 0 255 200) ( polygon [(560,320),(560,240),(520,240),(520,280),(360,280),(360,320)]),
        color (makeColorI 255 255 0 200) ( polygon [(280,560),(360,560),(360,520),(320,520),(320,360),(280,360)]),
        tiles
+       --translate (420, 80) hpiece,
+       --translate 80 420 compiece
       ]
+
+moveHuman :: Game -> Picture
+moveHuman game = pictures[
+			translate  ((humanPieces game)!!0).fst ((humanPieces game) !!0).snd  hpiece, 
+			translate  ((humanPieces game)!!1).fst ((humanPieces game) !!1).snd hpiece,
+			translate  ((humanPieces game)!!2).fst ((humanPieces game) !!2).snd hpiece,
+			translate  ((humanPieces game)!!3).fst ((humanPieces game) !!3).snd hpiece
+		]
+
+--moveComp :: Game -> Picture
+
+boardAsRunningPicture game = 
+	pictures[
+				moveHuman game,
+				--moveComp game,
+				boardGrid
+			]
+
 gameAsPicture::Game->Picture
 
-gameAsPicture p = translate (fromIntegral screenWidth * (-0.5))
+gameAsPicture game = translate (fromIntegral screenWidth * (-0.5))
                                (fromIntegral screenHeight * (-0.5))
                                frame
-    where frame = boardGrid
+    where frame = boardAsRunningPicture game
