@@ -21,6 +21,7 @@ cellWidth = 40
 cellHeight :: Int
 cellHeight = 40
 
+
 getHomeCoords :: Player -> Int -> (Int,Int)
 getHomeCoords player number =
       case player of

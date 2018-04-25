@@ -77,18 +77,32 @@ boardGrid =
 
 moveHuman :: Game -> Picture
 moveHuman game = pictures[
-			translate  ((humanPieces game)!!0).fst ((humanPieces game) !!0).snd  hpiece, 
-			translate  ((humanPieces game)!!1).fst ((humanPieces game) !!1).snd hpiece,
-			translate  ((humanPieces game)!!2).fst ((humanPieces game) !!2).snd hpiece,
-			translate  ((humanPieces game)!!3).fst ((humanPieces game) !!3).snd hpiece
+			translate  (getX (humanPieces game) 0) (getY (humanPieces game) 0) hpiece,
+			translate  (getX (humanPieces game) 1) (getY (humanPieces game) 1) hpiece,
+			translate  (getX (humanPieces game) 2) (getY (humanPieces game) 2) hpiece,
+			translate  (getX (humanPieces game) 3) (getY (humanPieces game) 3) hpiece
+		]
+moveComp :: Game -> Picture
+moveComp game = pictures[
+			translate  (getX (computerPieces game) 0) (getY (computerPieces game) 0) compiece,
+			translate  (getX (computerPieces game) 1) (getY (computerPieces game) 1) compiece,
+			translate  (getX (computerPieces game) 2) (getY (computerPieces game) 2) compiece,
+			translate  (getX (computerPieces game) 3) (getY (computerPieces game) 3) compiece
 		]
 
---moveComp :: Game -> Picture
+toFloat::Int->Float
+toFloat a = fromIntegral a/1
 
-boardAsRunningPicture game = 
+getX::[(Int,Int)]->Int->Float
+getX arr i = toFloat $ fst (arr!!i)
+
+getY::[(Int,Int)]->Int->Float
+getY arr i = toFloat $ snd (arr!!i)
+
+boardAsRunningPicture game =
 	pictures[
 				moveHuman game,
-				--moveComp game,
+				moveComp game,
 				boardGrid
 			]
 
