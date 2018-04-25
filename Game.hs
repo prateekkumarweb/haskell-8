@@ -6,7 +6,7 @@ data Player = Human | Computer deriving (Eq,Show)
 type Cell = Maybe Player
 data State = Running | GameOver (Player) deriving (Eq, Show)
 
-type Board = Array (Int,Int) Cell
+type Board = 
 
 data Game = Game{ gameBoard :: Board
                 , gamePlayer :: Player
@@ -39,7 +39,7 @@ getHomeCoords player number =
 initialGame = Game{ gameBoard = array indexRange $ zip (range indexRange) (repeat Nothing)
                   , gamePlayer = Human
                   , gameState = Running
-                  , humanPieces = [(440,160),(520,160),(440,80),(520,80)]
+                  , humanPieces = [(440,160),(500,260),(440,80),(520,80)]
                   , computerPieces = [(80,520),(160,520),(80,440),(160,440)]
                   }
         where indexRange = ((0, 0), (5, 11))
