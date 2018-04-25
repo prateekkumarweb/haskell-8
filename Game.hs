@@ -6,7 +6,7 @@ data Player = Human | Computer deriving (Eq,Show)
 type Cell = Maybe Player
 data State = Running | GameOver (Player) deriving (Eq, Show)
 
-type Board =[(Int,Int)] 
+type Board =[(Int,Int)]
 
 data Game = Game{ gameBoard :: Board
                 , gamePlayer :: Player
@@ -14,7 +14,7 @@ data Game = Game{ gameBoard :: Board
                 , humanPieces :: [(Int,Int)]
                 , computerPieces :: [(Int,Int)]
                 , die :: Int
-                }
+                } 
 
 cellWidth :: Int
 cellWidth = 40
