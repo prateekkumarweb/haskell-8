@@ -9,6 +9,7 @@ data State = Running | GameOver (Maybe Player) deriving (Eq, Show)
 type Board = Array (Int, Int) Cell
 
 data Game = Game { gameBoard :: Board
+				 , bigBoard :: Board
                  , gamePlayer :: Player
                  , gameState :: State
                  } deriving (Eq, Show)
@@ -27,7 +28,9 @@ cellHeight :: Float
 cellHeight = 60
 
 initialGame = Game { gameBoard = array indexRange $ zip (range indexRange) (repeat Nothing)
+				   , bigBoard = array iRange $ zip (range iRange) (repeat Nothing)
                    , gamePlayer = PlayerO
                    , gameState = Running
                    }
     where indexRange = ((0, 0), (8, 8))
+    	  iRange = ((0,0),(2,2))
