@@ -56,12 +56,24 @@ addntotile :: Int -> Int -> Int
 addntotile n p = if (n + p <= 52) then n+p
 								 else n + p -52
 
-transformGame (EventKey (SpecialKey KeyTab) Up _ _ ) game =
+transformGame (EventKey (SpecialKey KeyUp) Up _ _ ) game =
 		if (die game) == 6 then
 				if fst ((gameBoard game)!!0) == -1 then
       	game { gameBoard = replace 0 (9,0) temp1 , humanPieces = replace 0 (getCoords 9) temp2  }
 				else
 					game { gameBoard = replace 0 (addntotile 6 (fst (temp1!!0)),6 + snd (temp1!!0)) temp1 , humanPieces = replace 0 (getCoords (addntotile 6 (fst (temp1!!0)))) temp2  }
+		else
+			game
+		where
+			temp1 = (gameBoard game)
+			temp2 = (humanPieces game)
+
+transformGame (EventKey (SpecialKey KeyDown) Up _ _ ) game =
+		if (die game) == 6 then
+				if fst ((gameBoard game)!!1) == -1 then
+      	game { gameBoard = replace 1 (9,0) temp1 , humanPieces = replace 1 (getCoords 9) temp2  }
+				else
+					game { gameBoard = replace 1 (addntotile 6 (fst (temp1!!1)),6 + snd (temp1!!1)) temp1 , humanPieces = replace 1 (getCoords (addntotile 6 (fst (temp1!!1)))) temp2  }
 		else
 			game
 		where
