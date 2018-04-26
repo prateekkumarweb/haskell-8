@@ -2,6 +2,7 @@ module Main where
 
 import Game
 import Rendering
+import Logic
 
 import Data.Array
 import Graphics.Gloss

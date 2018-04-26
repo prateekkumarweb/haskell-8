@@ -2,7 +2,6 @@ module Game where
 
 import Data.Array
 
-
 data Player = PlayerX | PlayerO deriving (Eq, Show)
 type Cell = Maybe Player
 data State = Running | GameOver (Maybe Player) deriving (Eq, Show)
@@ -16,16 +15,16 @@ data Game = Game { gameBoard :: Board
 
 
 screenWidth :: Int
-screenWidth = 900
+screenWidth = 540
 
 screenHeight :: Int
-screenHeight = 900
+screenHeight = 540
 
 cellWidth :: Float
-cellWidth = 100
+cellWidth = 60
 
 cellHeight :: Float
-cellHeight = 100
+cellHeight = 60
 
 initialGame = Game { gameBoard = array indexRange $ zip (range indexRange) (repeat Nothing)
                    , gamePlayer = PlayerX
