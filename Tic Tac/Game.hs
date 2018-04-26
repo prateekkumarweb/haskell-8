@@ -27,7 +27,7 @@ cellHeight :: Float
 cellHeight = 60
 
 initialGame = Game { gameBoard = array indexRange $ zip (range indexRange) (repeat Nothing)
-                   , gamePlayer = PlayerX
+                   , gamePlayer = PlayerO
                    , gameState = Running
                    }
     where indexRange = ((0, 0), (8, 8))

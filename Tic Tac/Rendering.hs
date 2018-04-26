@@ -34,7 +34,7 @@ xCell = pictures
         ]
 
 oCell :: Picture
-oCell = thickCircle 12.0 10.0
+oCell = thickCircle 15.0 7.0
 
 cellsOfBoard :: Board -> Cell -> Picture -> Picture
 cellsOfBoard board cell cellPicture =
