@@ -35,12 +35,12 @@ getCoords 52 = (340,380)
 getCoords a
 	| a <= 13 = if (mod a 13) < 7 then getCoords1 (mod a 13) (mod a 7)
 							else getCoords1 (mod a 13) (7- (mod a 7))
-	| a <= 26 = if (mod a 13) < 7 then getCoords2 (mod a 13) (1 + (mod a 7))
-							else getCoords2 (mod a 13) (6- (mod a 7))
-	| a <= 39 = if (mod a 13) < 7 then getCoords3 (mod a 13) (2+ (mod a 7))
-							else getCoords3 (mod a 13) (5- (mod a 7))
-	| otherwise = if (mod a 13) < 7 then getCoords4 (mod a 13) (3 + (mod a 7))
-							else getCoords4 (mod a 13) (4- (mod a 7))
+	| a <= 26 = if (mod a 13) < 7 then getCoords2 (mod a 13) (mod (1 + (mod a 7)) 7)
+							else getCoords2 (mod a 13) (7- (mod a 20))
+	| a <= 39 = if (mod a 13) < 7 then getCoords3 (mod a 13) (mod (2+ (mod a 7)) 7)
+							else getCoords3 (mod a 13) (7- (mod a 33))
+	| otherwise = if (mod a 13) < 7 then getCoords4 (mod a 13) (mod (3 + (mod a 7)) 7)
+							else getCoords4 (mod a 13) (7- (mod a 46))
 
 temp1 :: [(Int,Int)]
 temp1 = [(0,0)]
@@ -52,21 +52,25 @@ replace n newVal (x:xs)
 	|n == 0 = newVal:xs
 	| otherwise = x:replace (n-1) newVal xs
 
-transformGame (EventKey (SpecialKey KeyUp) Up _ _ ) game =
+addntotile :: Int -> Int -> Int
+addntotile n p = if (n + p <= 52) then n+p
+								 else n + p -52
+
+transformGame (EventKey (SpecialKey KeyTab) Up _ _ ) game =
 		if (die game) == 6 then
-			if fst ((gameBoard game)!!0) == -1 then
-        let temp1 = (gameBoard game)
-            temp2 = (humanPieces game)
-        in
-				    game { gameBoard = replace 0 (-1,0) temp1 , humanPieces = [(400,500),(100,200),(300,40),(88,22)]  }
-			else
-				game
+				if fst ((gameBoard game)!!0) == -1 then
+      	game { gameBoard = replace 0 (9,0) temp1 , humanPieces = replace 0 (getCoords 9) temp2  }
+				else
+					game { gameBoard = replace 0 (addntotile 6 (fst (temp1!!0)),6 + snd (temp1!!0)) temp1 , humanPieces = replace 0 (getCoords (addntotile 6 (fst (temp1!!0)))) temp2  }
 		else
 			game
+		where
+			temp1 = (gameBoard game)
+			temp2 = (humanPieces game)
 
 transformGame (EventKey (SpecialKey KeySpace) Up _ _ ) game =
    case gameState game of
-       Running -> game { die = 6,humanPieces = [(100,250),(340,200),(300,40),(88,22)] }
+       Running -> game { die = 6 }
        GameOver _ -> initialGame
 
 
