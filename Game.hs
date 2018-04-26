@@ -6,14 +6,15 @@ data Player = Human | Computer deriving (Eq,Show)
 type Cell = Maybe Player
 data State = Running | GameOver (Player) deriving (Eq, Show)
 
-type Board = Array (Int,Int) Cell
+type Board =[(Int,Int)]
 
 data Game = Game{ gameBoard :: Board
                 , gamePlayer :: Player
                 , gameState :: State
                 , humanPieces :: [(Int,Int)]
                 , computerPieces :: [(Int,Int)]
-                }
+                , die :: Int
+                } 
 
 cellWidth :: Int
 cellWidth = 40
@@ -36,10 +37,10 @@ getHomeCoords player number =
                       3 -> (80,440)
                       4 -> (160,440)
 
-initialGame = Game{ gameBoard = array indexRange $ zip (range indexRange) (repeat Nothing)
+initialGame = Game{ gameBoard = [(-1,0),(-1,0),(-1,0),(-1,0),(-1,0),(-1,0),(-1,0),(-1,0)]
                   , gamePlayer = Human
                   , gameState = Running
                   , humanPieces = [(440,160),(520,160),(440,80),(520,80)]
                   , computerPieces = [(80,520),(160,520),(80,440),(160,440)]
+                  , die = 0
                   }
-        where indexRange = ((0, 0), (5, 11))

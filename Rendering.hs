@@ -101,9 +101,9 @@ getY arr i = toFloat $ snd (arr!!i)
 
 boardAsRunningPicture game =
 	pictures[
+        boardGrid,
 				moveHuman game,
-				moveComp game,
-				boardGrid
+				moveComp game
 			]
 
 gameAsPicture::Game->Picture
