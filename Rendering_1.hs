@@ -94,7 +94,7 @@ intToString :: Int -> String
 intToString n = "." ++ show n ++ "."
 
 dieDisplay :: Game -> Picture
-dieDisplay game = 
+dieDisplay game =
     pictures[
               color (makeColorI 255 255 255 200) ( polygon [(450,450),(510,450),(510,510),(450,510)]),
               translate 455 460 (color (makeColorI 0 0 0 200) ( scale 0.4 0.4 (text $ intToString (die game))))

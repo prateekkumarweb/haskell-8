@@ -7,7 +7,7 @@ import Graphics.Gloss.Data.Color
 
 import Rendering_1
 import Game
-import Logic_1
+import Logic
 
 window = InWindow "Functional" (screenWidth, screenHeight) (100, 100)
 backgroundColor = makeColor 255 255 255 128
