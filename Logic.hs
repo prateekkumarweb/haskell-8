@@ -207,11 +207,11 @@ kill i j game =
 		temp2 = (humanPieces game)
 
 killCompPieces:: Int -> Game -> Game
-killCompPieces i game = killComp i 0 $ killComp i 1 $ killComp i 2 $ killComp i 3 game
+killCompPieces i game = killComp i 4 $ killComp i 5 $ killComp i 6 $ killComp i 7 game
 
 killComp :: Int -> Int -> Game -> Game
 killComp i j game =
-	if ( addntotile d (fst (board!!i))) == (fst (board!!j)) then
+	if ( (fst (board!!i))) == (fst (board!!j)) then
 		game {gameBoard = replace j (-1,0) temp1 , computerPieces = replace (mod j 4) (getHomeCoords 1 ((mod j 4)+1)) temp2 }
 	else
 		game
