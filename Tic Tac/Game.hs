@@ -10,6 +10,8 @@ type Board = Array (Int, Int) Cell
 
 data Game = Game { gameBoard :: Board
 				 , bigBoard :: Board
+				 , prevMove :: (Int,Int)
+				 , currentBox :: (Int, Int)
                  , gamePlayer :: Player
                  , gameState :: State
                  } deriving (Eq, Show)
@@ -29,6 +31,8 @@ cellHeight = 60
 
 initialGame = Game { gameBoard = array indexRange $ zip (range indexRange) (repeat Nothing)
 				   , bigBoard = array iRange $ zip (range iRange) (repeat Nothing)
+				   , prevMove = (-1,-1)
+				   , currentBox = (-1,-1)
                    , gamePlayer = PlayerO
                    , gameState = Running
                    }
