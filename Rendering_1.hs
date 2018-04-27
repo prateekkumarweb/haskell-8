@@ -54,6 +54,12 @@ hpiece = color (makeColorI 0 0 100 200) ( circleSolid 15)
 compiece :: Picture
 compiece = color (makeColorI 0 100 0 200) ( circleSolid 15)
 
+compiece1 :: Picture
+compiece1 = pictures[
+                    color (makeColorI 0 100 0 200) ( circleSolid 15),
+                    color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "1")))
+                    ]
+
 
 boardGrid :: Picture
 boardGrid =
@@ -85,7 +91,7 @@ moveHuman game = pictures[
 		]
 moveComp :: Game -> Picture
 moveComp game = pictures[
-			translate  (getX (computerPieces game) 0) (getY (computerPieces game) 0) compiece,
+			translate  (getX (computerPieces game) 0) (getY (computerPieces game) 0) compiece1,
 			translate  (getX (computerPieces game) 1) (getY (computerPieces game) 1) compiece,
 			translate  (getX (computerPieces game) 2) (getY (computerPieces game) 2) compiece,
 			translate  (getX (computerPieces game) 3) (getY (computerPieces game) 3) compiece
