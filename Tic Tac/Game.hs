@@ -4,12 +4,15 @@ import Data.Array
 
 data Player = PlayerX | PlayerO deriving (Eq, Show)
 type Cell = Maybe Player
+data PlayerA = Player_X | Player_O | Tie  deriving (Eq, Show)
+type CellA = Maybe PlayerA
 data State = Running | GameOver (Maybe Player) deriving (Eq, Show)
 
 type Board = Array (Int, Int) Cell
+type BBoard = Array (Int,Int) CellA
 
 data Game = Game { gameBoard :: Board
-				 , bigBoard :: Board
+				 , bigBoard :: BBoard
 				 , prevMove :: (Int,Int)
 				 , currentBox :: (Int, Int)
                  , gamePlayer :: Player
