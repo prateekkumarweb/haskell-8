@@ -24,20 +24,32 @@ switchPlayer game =
       PlayerX -> game { gamePlayer = PlayerO }
       PlayerO -> game { gamePlayer = PlayerX }
 
-full :: [Cell] -> Maybe PlayerA
-full (cell@(Just player):cells) | all (== cell) cells = Just player
-full _                                                = Nothing
+{- playerConvert :: Maybe Player -> Maybe PlayerA
+playerConvert Nothing = Nothing
+playerConvert player = 
+  if player == PlayerX then Player_X
+  else if player == PlayerO then Player_O
+  else Nothing
 
-winnerGame :: Board -> Maybe Player
-winnerGame board = asum $ map full $ rows ++ cols ++ diags
+full :: [Cell] -> Maybe Player
+full (cell@(Just player):cells) | all (== cell) cells = Just player
+full _ = Nothing
+
+ full :: [Cell] -> Maybe Player
+full (cell@(Just player):cells) | all (== cell) cells = Just player
+full _ = Nothing
+
+winnerGame :: BBoard -> Maybe PlayerA
+winnerGame board = asum $ map fullA $ rows ++ cols ++ diags
     where rows  = [[board ! (i,j) | i <- [0..2]] | j <- [0..2]]
           cols  = [[board ! (j,i) | i <- [0..2]] | j <- [0..2]]
           diags = [[board ! (i,i) | i <- [0..2]]
                   ,[board ! (i,j) | i <- [0..2], let j = 2-i ]]
 
-winnerBox :: Board -> (Int,Int) -> Maybe PlayerA
-winnerBox board pos = asum $ map full $ rows ++ cols ++ diags
-    where rows  = [[board ! (3* (fst pos) + i,3* (snd pos) + j) | i <- [0..2]] | j <- [0..2]]
+winnerBox :: Game -> (Int,Int) -> Maybe PlayerA
+winnerBox game pos = asum $ map $ playerConvert full $ rows ++ cols ++ diags
+    where board = (gameBoard game)
+          rows  = [[board ! (3* (fst pos) + i,3* (snd pos) + j) | i <- [0..2]] | j <- [0..2]]
           cols  = [[board ! (3* (fst pos) + j,3* (snd pos) + i) | i <- [0..2]] | j <- [0..2]]
           diags = [[board ! (3* (fst pos) + i,3* (snd pos) + i) | i <- [0..2]]
                   ,[board ! (3* (fst pos) + i,3* (snd pos) + j) | i <- [0..2], let j = 2-i ]]
@@ -46,19 +58,19 @@ countCells :: Cell -> Board  -> Int
 countCells cell = length . filter ((==) cell) . elems
 
 checkBoxWon :: Game -> Game
-checkBoxWon game = checkGameWon game (currentBox game)
+checkBoxWon game = checkBoxGameWon game (currentBox game)
 
-checkGameWon :: Game -> (Int,Int) -> Game
-checkGameWon game pos 
-    | Just p <- winnerBox board pos =
+checkBoxGameWon :: Game -> (Int,Int) -> Game
+checkBoxGameWon game pos 
+    | Just p <- winnerBox game pos =
         game { bigBoard = bBoard // [(pos, Just p)] }
     | countCells Nothing board  == 0 =
-        game { bigBoard = bBoard // [(pos, Tie)] }
+        game { bigBoard = bBoard // [(pos, Just Tie)] }
     | otherwise = game
     where board = gameBoard game
           bBoard = bigBoard game
 
-checkGameOver:: Game -> Game
+ checkGameOver:: Game -> Game
 checkGameOver game 
     | Just p <- winnerGame board =
         game { gameState = GameOver $ Just p }
@@ -66,13 +78,13 @@ checkGameOver game
         game { gameState = GameOver Nothing }
     | otherwise = game
     where board = bigBoard game
-
+-}
 playerTurn :: Game -> (Int, Int) -> Game
 playerTurn game cellCoord
     | isCoordCorrect cellCoord && isBoxCorrect game cellCoord && board ! cellCoord == Nothing =
-        checkGameOver
-        $ checkBoxWon
-        $ switchPlayer 
+        -- checkGameOver
+        -- checkBoxWon
+         switchPlayer 
         $ game { gameBoard = board // [(cellCoord, Just player)]
                , currentBox =  whichBox cellCoord
                , prevMove = cellCoord
