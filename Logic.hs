@@ -42,8 +42,10 @@ getCoords a
 							else getCoords2 (mod a 13) (7- (mod a 20))
 	| a <= 39 = if (mod a 13) < 7 then getCoords3 (mod a 13) (mod (2+ (mod a 7)) 7)
 							else getCoords3 (mod a 13) (7- (mod a 33))
-	| otherwise = if (mod a 13) < 7 then getCoords4 (mod a 13) (mod (3 + (mod a 7)) 7)
+	| a <= 52 = if (mod a 13) < 7 then getCoords4 (mod a 13) (mod (3 + (mod a 7)) 7)
 							else getCoords4 (mod a 13) (7- (mod a 46))
+	| a <= 115 = (540 - (a-110)*40,300)
+	| otherwise = (60 + (a-136)*40,300)
 
 
 tossDice :: Game -> Game
@@ -184,10 +186,12 @@ checkSafe game
 movePiece :: Int -> Game -> Game
 movePiece i game =
 	if i >= 0 then
-		killPieces i (game { gameBoard = replace i (addntotile (die game) (fst (temp1!!i)),(die game) + (snd (temp1!!i))) temp1 , computerPieces = replace (mod i 4) (getCoords (addntotile (die game) (fst (temp1!!i)))) temp2  })
+		killPieces i (game { gameBoard = replace i (x,y) temp1 , computerPieces = replace (mod i 4) (getCoords (x+ (fl y)*100)) temp2  })
 	else
 		game
 	where
+		x = addntotile (die game) (fst (temp1!!i))
+		y = (die game) + (snd (temp1!!i))
 		temp1 = (gameBoard game)
 		temp2 = (computerPieces game)
 
@@ -221,39 +225,100 @@ killComp i j game =
 		temp1 = (gameBoard game)
 		temp2 = (computerPieces game)
 
+fl :: Int -> Int
+fl i
+	| i <= 53 = 0
+	|otherwise = 1
+
 transformGame (EventKey (SpecialKey KeyUp) Up _ _ ) game =
 	if (gamePlayer game) == Human then
-		if (die game) == 6 then
-				if fst ((gameBoard game)!!0) == -1 then
-      	computerTurn $ killCompPieces 0 (game { gameBoard = replace 0 (9,0) temp1 , humanPieces = replace 0 (getCoords 9) temp2  })
-				else
-				computerTurn $ killCompPieces 0 (game { gameBoard = replace 0 (addntotile 6 (fst (temp1!!0)),6 + snd (temp1!!0)) temp1 , humanPieces = replace 0 (getCoords (addntotile 6 (fst (temp1!!0)))) temp2  })
-		else if fst ((gameBoard game)!!0) /= -1 then
-			computerTurn $ killCompPieces 0  (game { gameBoard = replace 0 (addntotile (die game) (fst (temp1!!0)),(die game) + snd (temp1!!0)) temp1 , humanPieces = replace 0 (getCoords (addntotile (die game) (fst (temp1!!0)))) temp2  })
-		else
-			computerTurn(game)
-	else
-		game
-		where
-			temp1 = (gameBoard game)
-			temp2 = (humanPieces game)
-
-transformGame (EventKey (SpecialKey KeyDown) Up _ _ ) game =
-	if (gamePlayer game) == Human then
-		if (die game) == 6 then
-				if fst ((gameBoard game)!!1) == -1 then
-      	game { gameBoard = replace 1 (9,0) temp1 , humanPieces = replace 1 (getCoords 9) temp2  }
-				else
-					game { gameBoard = replace 1 (addntotile 6 (fst (temp1!!1)),6 + snd (temp1!!1)) temp1 , humanPieces = replace 1 (getCoords (addntotile 6 (fst (temp1!!1)))) temp2  }
-		else if fst ((gameBoard game)!!1) /= -1 then
-			game { gameBoard = replace 1 (addntotile (die game) (fst (temp1!!1)),(die game) + snd (temp1!!1)) temp1 , humanPieces = replace 1 (getCoords (addntotile (die game) (fst (temp1!!1)))) temp2  }
+		if y < 59 then
+			if (die game) == 6 then
+					if fst ((gameBoard game)!!0) == -1 then
+	      	computerTurn $ killCompPieces 0 (game { gameBoard = replace 0 (9,0) temp1 , humanPieces = replace 0 (getCoords 9) temp2  })
+					else
+					computerTurn $ killCompPieces 0 (game { gameBoard = replace 0 (x,y) temp1 , humanPieces = replace 0 (getCoords (x + (fl y)*100)) temp2  })
+			else if fst ((gameBoard game)!!0) /= -1 then
+				computerTurn $ killCompPieces 0  (game { gameBoard = replace 0 (x,y) temp1 , humanPieces = replace 0 (getCoords (x + (fl y)*100)) temp2  })
+			else
+				computerTurn(game)
 		else
 			game
 	else
 		game
 		where
+			x = addntotile (die game) (fst (temp1!!0))
+			y = (die game) + snd (temp1!!0)
 			temp1 = (gameBoard game)
 			temp2 = (humanPieces game)
+
+transformGame (EventKey (SpecialKey KeyDown) Up _ _ ) game =
+	if (gamePlayer game) == Human then
+		if y < 59 then
+			if (die game) == 6 then
+					if fst ((gameBoard game)!!1) == -1 then
+	      	computerTurn $ killCompPieces 1 (game { gameBoard = replace 1 (9,0) temp1 , humanPieces = replace 1 (getCoords 9) temp2  })
+					else
+					computerTurn $ killCompPieces 1 (game { gameBoard = replace 1 (x,y) temp1 , humanPieces = replace 1 (getCoords (x + (fl y)*100)) temp2  })
+			else if fst ((gameBoard game)!!1) /= -1 then
+				computerTurn $ killCompPieces 1  (game { gameBoard = replace 1 (x,y) temp1 , humanPieces = replace 1 (getCoords (x + (fl y)*100)) temp2  })
+			else
+				computerTurn(game)
+		else
+			game
+	else
+		game
+		where
+			x = addntotile (die game) (fst (temp1!!1))
+			y = (die game) + snd (temp1!!1)
+			temp1 = (gameBoard game)
+			temp2 = (humanPieces game)
+
+transformGame (EventKey (SpecialKey KeyLeft) Up _ _ ) game =
+	if (gamePlayer game) == Human then
+		if y < 59 then
+			if (die game) == 6 then
+					if fst ((gameBoard game)!!2) == -1 then
+	      	computerTurn $ killCompPieces 2 (game { gameBoard = replace 2 (9,0) temp1 , humanPieces = replace 2 (getCoords 9) temp2  })
+					else
+					computerTurn $ killCompPieces 2 (game { gameBoard = replace 2 (x,y) temp1 , humanPieces = replace 2 (getCoords (x + (fl y)*100)) temp2  })
+			else if fst ((gameBoard game)!!2) /= -1 then
+				computerTurn $ killCompPieces 2 (game { gameBoard = replace 2 (x,y) temp1 , humanPieces = replace 2 (getCoords (x + (fl y)*100)) temp2  })
+			else
+				computerTurn(game)
+		else
+			game
+	else
+		game
+		where
+			x = addntotile (die game) (fst (temp1!!2))
+			y = (die game) + snd (temp1!!2)
+			temp1 = (gameBoard game)
+			temp2 = (humanPieces game)
+
+transformGame (EventKey (SpecialKey KeyRight) Up _ _ ) game =
+	if (gamePlayer game) == Human then
+		if y < 59 then
+			if (die game) == 6 then
+					if fst ((gameBoard game)!!3) == -1 then
+	      	computerTurn $ killCompPieces 3 (game { gameBoard = replace 3 (9,0) temp1 , humanPieces = replace 3 (getCoords 9) temp2  })
+					else
+					computerTurn $ killCompPieces 3 (game { gameBoard = replace 3 (x,y) temp1 , humanPieces = replace 3 (getCoords (x + (fl y)*100)) temp2  })
+			else if fst ((gameBoard game)!!3) /= -1 then
+				computerTurn $ killCompPieces 3  (game { gameBoard = replace 3 (x,y) temp1 , humanPieces = replace 3 (getCoords (x + (fl y)*100)) temp2  })
+			else
+				computerTurn(game)
+		else
+			game
+	else
+		game
+		where
+			x = addntotile (die game) (fst (temp1!!3))
+			y = (die game) + snd (temp1!!3)
+			temp1 = (gameBoard game)
+			temp2 = (humanPieces game)
+
+transformGame (EventKey (SpecialKey KeyTab) Up _ _ ) game = computerTurn game
 
 transformGame (EventKey (SpecialKey KeySpace) Up _ _ ) game =
    	case gameState game of
