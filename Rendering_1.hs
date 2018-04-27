@@ -51,6 +51,28 @@ tiles =
 hpiece :: Picture
 hpiece = color (makeColorI 0 0 100 200) ( circleSolid 15)
 
+hpiece1 :: Picture 
+hpiece1 = pictures[
+                    color (makeColorI 0 0 100 200) ( circleSolid 15),
+                    color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "1")))
+                    ]
+hpiece2 :: Picture 
+hpiece2 = pictures[
+                    color (makeColorI 0 0 100 200) ( circleSolid 15),
+                    color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "2")))
+                    ]
+hpiece3 :: Picture 
+hpiece3 = pictures[
+                    color (makeColorI 0 0 100 200) ( circleSolid 15),
+                    color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "3")))
+                    ]
+hpiece4 :: Picture 
+hpiece4 = pictures[
+                    color (makeColorI 0 0 100 200) ( circleSolid 15),
+                    color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "4")))
+                    ]                    
+
+
 compiece :: Picture
 compiece = color (makeColorI 0 100 0 200) ( circleSolid 15)
 
@@ -59,6 +81,26 @@ compiece1 = pictures[
                     color (makeColorI 0 100 0 200) ( circleSolid 15),
                     color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "1")))
                     ]
+
+
+compiece2 :: Picture
+compiece2 = pictures[
+                    color (makeColorI 0 100 0 200) ( circleSolid 15),
+                    color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "2")))
+                    ]
+
+compiece3 :: Picture
+compiece3 = pictures[
+                    color (makeColorI 0 100 0 200) ( circleSolid 15),
+                    color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "3")))
+                    ]
+
+compiece4 :: Picture
+compiece4 = pictures[
+                    color (makeColorI 0 100 0 200) ( circleSolid 15),
+                    color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "4")))
+                    ]
+
 
 
 boardGrid :: Picture
@@ -84,17 +126,17 @@ boardGrid =
 
 moveHuman :: Game -> Picture
 moveHuman game = pictures[
-			translate  (getX (humanPieces game) 0) (getY (humanPieces game) 0) hpiece,
-			translate  (getX (humanPieces game) 1) (getY (humanPieces game) 1) hpiece,
-			translate  (getX (humanPieces game) 2) (getY (humanPieces game) 2) hpiece,
-			translate  (getX (humanPieces game) 3) (getY (humanPieces game) 3) hpiece
+			translate  (getX (humanPieces game) 0) (getY (humanPieces game) 0) hpiece1,
+			translate  (getX (humanPieces game) 1) (getY (humanPieces game) 1) hpiece2,
+			translate  (getX (humanPieces game) 2) (getY (humanPieces game) 2) hpiece3,
+			translate  (getX (humanPieces game) 3) (getY (humanPieces game) 3) hpiece4
 		]
 moveComp :: Game -> Picture
 moveComp game = pictures[
 			translate  (getX (computerPieces game) 0) (getY (computerPieces game) 0) compiece1,
-			translate  (getX (computerPieces game) 1) (getY (computerPieces game) 1) compiece,
-			translate  (getX (computerPieces game) 2) (getY (computerPieces game) 2) compiece,
-			translate  (getX (computerPieces game) 3) (getY (computerPieces game) 3) compiece
+			translate  (getX (computerPieces game) 1) (getY (computerPieces game) 1) compiece2,
+			translate  (getX (computerPieces game) 2) (getY (computerPieces game) 2) compiece3,
+			translate  (getX (computerPieces game) 3) (getY (computerPieces game) 3) compiece4
 		]
 intToString :: Int -> String
 intToString n = "." ++ show n ++ "."
