@@ -5,7 +5,7 @@ A Player v/s Computer game in Haskell
 ### Running Instructions
 
 * Install Haskell  
-* Install Gloss (A Haskell graphics library) by typing in terminal
+* Install Gloss (A Haskell graphics library) by using the command :
 
 ```
 cabal install gloss
@@ -13,52 +13,35 @@ cabal install gloss
 
 * Open Terminal  
 * Locate to directory  
-* Type   
+* use the given command to compile the source code
 
 ```
  ghc -o -l Main.hs
  ```
-* And then type 
+* After compiling , use the given command to run the game. 
 
  ```
  ./l
  ```
 
 
-Game will start  
-### Playing Instructions  
+Happy Playing!!
+
+### About the Game
+
+* The game is a standard LUDO game.
+* There are two players in this game: Human and Computer.
+* You have to play your turn using the instructions given later in the file.
+* Then the computer plays its turn.
+* The human piece is moved only after computer plays its turn.
+* The box with a number in it, on the top right of the window represents the die.
+
+### How to Play
 
 * use "SPACEBAR" to roll the dice  
 * Use arrow key UP to move 1st piece
 * Use arrow key DOWN to move 2nd piece
 * Use arrow key LEFT to move 3rd piece
 * Use arrow key RIGHT to move 4th piece  
+* If you don't have any move, just press any of the arrow key to allow computer to play its turn.
 
-# Mega Tic-Tac-Toe
-
-2 Player Mega Tic Tac Toe Game
-
-
-### Running Instructions
-
-* Install Haskell  
-* Install Gloss (A Haskell graphics library) 
-
-```
-cabal install gloss
-```
-* Open Terminal  
-* Locate to directory  
-* Type   
-
-```
- ghc -o -l Main.hs
- ```
-* And then type 
-
- ```
- ./l
- ```
- 
-### Game Rules 
-1st Player can play in any sqaure where ever he wants and the second player can play the board decided by the position of cell in that small board and the game continues till either the game ties or one of the player wins by making a trail of winning individual boxes in rows/colums/diagnoals.
