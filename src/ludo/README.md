@@ -1,6 +1,6 @@
 # LUDO
 
-A Player v/s Computer game in Haskell
+A Player v/s Computer LUDO game made in Haskell
 
 ### Running Instructions
 
