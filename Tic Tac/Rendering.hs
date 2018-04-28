@@ -101,9 +101,8 @@ intToString n = "." ++ show n ++ "."
 dieDisplay :: Game -> Picture
 dieDisplay game =
     pictures[
-              color (makeColorI 0 0 0 200) ( polygon [(450,450),(510,450),(510,510),(450,510)]),
-              translate 355 460 (color (makeColorI 0 255 255 200) ( scale 0.4 0.4 (text $ intToString (fst (prevMove game) )))),
-              translate 455 460 (color (makeColorI 255 255 255 200) ( scale 0.4 0.4 (text $ intToString (snd (prevMove game) ))))
+              translate 380 460 (color (makeColorI 0 0 0 200) ( scale 0.4 0.4 (text $ intToString (fst (prevMove game) )))),
+              translate 455 460 (color (makeColorI 0 0 0 200) ( scale 0.4 0.4 (text $ intToString (snd (prevMove game) ))))
             ]
 
 mainGrid :: Picture
