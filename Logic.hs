@@ -9,26 +9,33 @@ import Control.Monad
 import Game
 import Graphics.Gloss.Interface.Pure.Game
 
+-- | Function to get coordinates of piece in the right path
+
 getCoords1:: Int -> Int -> (Int,Int)
 getCoords1 i j = if i == 7 then (580,300)
 								 else if i > 7 then (380 + (j-1)*40,260)
 								 else (380 + (j-1)*40,340)
+
+-- | Function to get coordinates of piece in the down path
 
 getCoords2:: Int -> Int -> (Int,Int)
 getCoords2 i j = if i == 7 then (300,20)
 								 else if i > 7 then (260,20 + (6-j)*40)
 								 else (340,20 + (6-j)*40)
 
+-- | Function to get coordinates of piece in the left path
 getCoords3:: Int -> Int -> (Int,Int)
 getCoords3 i j = if i == 7 then (20,300)
 								 else if i > 7 then (20 + (6-j)*40,340)
 								 else (20 + (6-j)*40,260)
 
+-- | Function to get coordinates of piece in the top path
 getCoords4:: Int -> Int -> (Int,Int)
 getCoords4 i j = if i == 7 then (300,580)
 								 else if i > 7 then (340,380 + (j-1)*40)
 								 else (260,380 + (j-1)*40)
 
+-- | Function to return the coordinates given the cell number
 getCoords :: Int -> (Int,Int)
 getCoords 13 = (380,260)
 getCoords 26 = (260,220)
@@ -47,7 +54,7 @@ getCoords a
 	| a <= 115 = (540 - (a-110)*40,300)
 	| otherwise = (60 + (a-136)*40,300)
 
-
+-- | Function to toss the dice
 tossDice :: Game -> Game
 tossDice game = game{die = head (randomNumbers game), randomNumbers = temp}
 									where temp = tail (randomNumbers game)
@@ -58,12 +65,15 @@ temp1 :: [(Int,Int)]
 temp1 = [(0,0)]
 temp2 :: [(Int,Int)]
 temp2 = [(0,0)]
+
+-- | Function to replace given value at a given position in the given array
 replace :: Int -> (Int,Int) ->[(Int,Int)] -> [(Int,Int)]
 replace n newVal [] = [newVal]
 replace n newVal (x:xs)
 	|n == 0 = newVal:xs
 	| otherwise = x:replace (n-1) newVal xs
 
+-- | Function to give the value of next cell on rolling the dice
 addntotile :: Int -> Int -> Int
 addntotile n p = if (n + p <= 52) then n+p
 									else if p > 100  then n+p - 100
@@ -73,6 +83,7 @@ doDelay :: Int -> Game -> Game
 doDelay 0 game = game
 doDelay n game = doDelay (n-1) game
 
+-- | Function to check the game over condition
 checkGameOver :: Int -> Game -> Game
 checkGameOver i game =
 		if (snd (board!!(i*4))) == 58 then
@@ -93,9 +104,11 @@ checkGameOver i game =
 			game
 		where board = (gameBoard game)
 
+-- | Function to change the turn from computer to human
 changeTurn :: Game -> Game
 changeTurn game = game{ gamePlayer = Human}
 
+-- | Function to switch control to computer
 computerTurn:: Game -> Game
 computerTurn game =
 			changeTurn
@@ -103,6 +116,7 @@ computerTurn game =
 			$ playTurn
 			$ checkGameOver 0 game
 
+-- | Function to play the computer's move
 playTurn:: Game -> Game
 playTurn game
 		| (gameState game) == Running =
@@ -111,6 +125,7 @@ playTurn game
 				$ game{gamePlayer = Computer}
 		| otherwise = game
 
+-- | Function to get the move to be played by the computer
 playComp :: Game -> Game
 playComp game =
 	if i > 3 && i < 8 then
@@ -133,6 +148,7 @@ playComp game =
 		temp2 = (computerPieces game)
 	--k = checkSafe game
 
+-- | Function to get the index of computer piece which is locked
 getInsidePiece:: Game -> Int
 getInsidePiece game
 		| (fst (board!!4)) == -1 = 4
@@ -143,6 +159,7 @@ getInsidePiece game
 		where
 			board = (gameBoard game)
 
+-- | Function to get the index of computer piece which is free to move
 getPiece:: Game -> Int
 getPiece game
 		| ((fst (board!!4)) /= -1) && (d + (snd (board!!4)) < 59) = 4
@@ -154,6 +171,7 @@ getPiece game
 			d = (die game)
 			board = (gameBoard game)
 
+-- | Function to check if any computer's piece is entering home
 checkHome :: Game -> Int
 checkHome game
 	| (d + (snd (board!!4)) > 53) && (d + (snd (board!!4)) < 59) = 4
@@ -165,6 +183,7 @@ checkHome game
 		d = (die game)
 		board = (gameBoard game)
 
+-- | Function to check if computer's piece kills human piece
 checkKill :: Game -> Int
 checkKill game
 	| addntotile d (fst (board!!4)) == (fst (board!!0)) || addntotile d (fst (board!!4)) == (fst (board!!1)) || addntotile d (fst (board!!4)) == (fst (board!!2)) || addntotile d (fst (board!!4)) == (fst (board!!3)) = 4
@@ -187,6 +206,7 @@ checkSafe game
 		d = (die game)
 		board = (gameBoard game)-}
 
+-- | Function to move the computer's piece
 movePiece :: Int -> Game -> Game
 movePiece i game =
 	if i >= 0 then
@@ -199,9 +219,11 @@ movePiece i game =
 		temp1 = (gameBoard game)
 		temp2 = (computerPieces game)
 
+-- | Function to kill human pieces by the computer
 killPieces :: Int -> Game -> Game
 killPieces i game = kill i 0 $ kill i 1 $ kill i 2 $ kill i 3 game
 
+-- | Function to check if a given computer piece kills a given human piece
 kill:: Int -> Int -> Game -> Game
 kill i j game =
 	if ((fst (board!!i))) == (fst (board!!j)) then
@@ -214,9 +236,11 @@ kill i j game =
 		temp1 = (gameBoard game)
 		temp2 = (humanPieces game)
 
+-- | Function to kill computer pieces by a human piece
 killCompPieces:: Int -> Game -> Game
 killCompPieces i game = killComp i 4 $ killComp i 5 $ killComp i 6 $ killComp i 7 game
 
+-- | Function to check if a given human piece kills a given computer piece
 killComp :: Int -> Int -> Game -> Game
 killComp i j game =
 	if ( (fst (board!!i))) == (fst (board!!j)) then
@@ -229,11 +253,13 @@ killComp i j game =
 		temp1 = (gameBoard game)
 		temp2 = (computerPieces game)
 
+-- | Function to floor of a/b where a and b are integer parameters
 fl :: Int -> Int
 fl i
 	| i <= 53 = 0
 	|otherwise = 1
 
+-- | Function to move Piece 1 of human
 transformGame (EventKey (SpecialKey KeyUp) Up _ _ ) game =
 	if (gamePlayer game) == Human then
 		if y < 59 then
@@ -256,6 +282,7 @@ transformGame (EventKey (SpecialKey KeyUp) Up _ _ ) game =
 			temp1 = (gameBoard game)
 			temp2 = (humanPieces game)
 
+-- | Function to move Piece 2 of human
 transformGame (EventKey (SpecialKey KeyDown) Up _ _ ) game =
 	if (gamePlayer game) == Human then
 		if y < 59 then
@@ -278,6 +305,7 @@ transformGame (EventKey (SpecialKey KeyDown) Up _ _ ) game =
 			temp1 = (gameBoard game)
 			temp2 = (humanPieces game)
 
+-- | Function to move Piece 3 of human
 transformGame (EventKey (SpecialKey KeyLeft) Up _ _ ) game =
 	if (gamePlayer game) == Human then
 		if y < 59 then
@@ -300,6 +328,7 @@ transformGame (EventKey (SpecialKey KeyLeft) Up _ _ ) game =
 			temp1 = (gameBoard game)
 			temp2 = (humanPieces game)
 
+-- | Function to move Piece 4 of human
 transformGame (EventKey (SpecialKey KeyRight) Up _ _ ) game =
 	if (gamePlayer game) == Human then
 		if y < 59 then
@@ -322,8 +351,10 @@ transformGame (EventKey (SpecialKey KeyRight) Up _ _ ) game =
 			temp1 = (gameBoard game)
 			temp2 = (humanPieces game)
 
+-- | Function to transfer control to computer manually
 transformGame (EventKey (SpecialKey KeyTab) Up _ _ ) game = computerTurn game
 
+-- | Function to roll the dice by human
 transformGame (EventKey (SpecialKey KeySpace) Up _ _ ) game =
    	case gameState game of
        Running -> tossDice game
