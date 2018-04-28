@@ -2,6 +2,11 @@
 
 A Player v/s Computer LUDO game made in Haskell
 
+### Download
+* First clone the repository using the clone option or use the given link
+
+https://github.com/IITH-SBJoshi/haskell-8.git
+
 ### Running Instructions
 
 * Install Haskell  
