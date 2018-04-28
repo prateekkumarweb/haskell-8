@@ -1,13 +1,13 @@
-
 module Main where
 
 import Data.Array
 import Graphics.Gloss
 import Graphics.Gloss.Data.Color
 
-import Rendering_1
+import Rendering
 import Game
 import Logic
+
 
 window = InWindow "Functional" (screenWidth, screenHeight) (100, 100)
 backgroundColor = makeColor 255 255 255 128
