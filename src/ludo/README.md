@@ -13,12 +13,12 @@ cabal install gloss
 
 * Open Terminal  
 * Locate to directory  
-* use the given command to compile the source code
+* Use the given Command to Compile the Source Code
 
 ```
  ghc -o -l Main.hs
  ```
-* After compiling , use the given command to run the game. 
+* After compiling , use the given Command to Run the Game. 
 
  ```
  ./l
