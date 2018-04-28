@@ -66,6 +66,7 @@ replace n newVal (x:xs)
 
 addntotile :: Int -> Int -> Int
 addntotile n p = if (n + p <= 52) then n+p
+									else if p > 100  then n+p - 100
 								 else n + p -52
 
 doDelay :: Int -> Game -> Game
@@ -74,10 +75,10 @@ doDelay n game = doDelay (n-1) game
 
 checkGameOver :: Int -> Game -> Game
 checkGameOver i game =
-		if (snd (board!!(i*4))) == 59 then
-			if (snd (board!!(i*4 + 1))) == 59 then
-				if (snd (board!!(i*4+2))) == 59 then
-					if (snd (board!!(i*4+3))) == 59 then
+		if (snd (board!!(i*4))) == 58 then
+			if (snd (board!!(i*4 + 1))) == 58 then
+				if (snd (board!!(i*4+2))) == 58 then
+					if (snd (board!!(i*4+3))) == 58 then
 						if i == 0 then
 							game {gameState = GameOver Human}
 						else
@@ -120,8 +121,10 @@ playComp game =
 	--	movePiece k game
 	else if (die game) == 6 && m > 3 && m < 8 then
 		game { gameBoard = replace m (35,0) temp1 , computerPieces = replace (mod m 4) (getCoords 35) temp2}
-	else
+	else if (getPiece game) > 0 then
 		movePiece (getPiece game) game
+	else
+		game
 	where
 		i = checkHome game
 		j = checkKill game
@@ -142,20 +145,21 @@ getInsidePiece game
 
 getPiece:: Game -> Int
 getPiece game
-		| (fst (board!!4)) /= -1 = 4
-		| (fst (board!!5)) /= -1 = 5
-		| (fst (board!!6)) /= -1 = 6
-		| (fst (board!!7)) /= -1 = 7
+		| ((fst (board!!4)) /= -1) && (d + (snd (board!!4)) < 59) = 4
+		| ((fst (board!!5)) /= -1) && (d + (snd (board!!5)) < 59) = 5
+		| ((fst (board!!6)) /= -1) && (d + (snd (board!!6)) < 59) = 6
+		| ((fst (board!!7)) /= -1) && (d + (snd (board!!7)) < 59) = 7
 		|otherwise = -1
 		where
+			d = (die game)
 			board = (gameBoard game)
 
 checkHome :: Game -> Int
 checkHome game
-	| d + (snd (board!!4)) > 53 = 4
-	| d + (snd (board!!5)) > 53 = 5
-	| d + (snd (board!!6)) > 53 = 6
-	| d + (snd (board!!7)) > 53 = 7
+	| (d + (snd (board!!4)) > 53) && (d + (snd (board!!4)) < 59) = 4
+	| (d + (snd (board!!5)) > 53) && (d + (snd (board!!5)) < 59) = 5
+	| (d + (snd (board!!6)) > 53) && (d + (snd (board!!6)) < 59) = 6
+	| (d + (snd (board!!7)) > 53) && (d + (snd (board!!7)) < 59) = 7
 	| otherwise = -1
 	where
 		d = (die game)
@@ -186,7 +190,7 @@ checkSafe game
 movePiece :: Int -> Game -> Game
 movePiece i game =
 	if i >= 0 then
-		killPieces i (game { gameBoard = replace i (x,y) temp1 , computerPieces = replace (mod i 4) (getCoords (x+ (fl y)*100)) temp2  })
+		killPieces i (game { gameBoard = replace i (x + (fl y)*100,y) temp1 , computerPieces = replace (mod i 4) (getCoords (x+ (fl y)*100)) temp2  })
 	else
 		game
 	where
@@ -237,9 +241,9 @@ transformGame (EventKey (SpecialKey KeyUp) Up _ _ ) game =
 					if fst ((gameBoard game)!!0) == -1 then
 	      	computerTurn $ killCompPieces 0 (game { gameBoard = replace 0 (9,0) temp1 , humanPieces = replace 0 (getCoords 9) temp2  })
 					else
-					computerTurn $ killCompPieces 0 (game { gameBoard = replace 0 (x,y) temp1 , humanPieces = replace 0 (getCoords (x + (fl y)*100)) temp2  })
+					computerTurn $ killCompPieces 0 (game { gameBoard = replace 0 (x + (fl y)*100,y) temp1 , humanPieces = replace 0 (getCoords (x + (fl y)*100)) temp2  })
 			else if fst ((gameBoard game)!!0) /= -1 then
-				computerTurn $ killCompPieces 0  (game { gameBoard = replace 0 (x,y) temp1 , humanPieces = replace 0 (getCoords (x + (fl y)*100)) temp2  })
+				computerTurn $ killCompPieces 0  (game { gameBoard = replace 0 (x + (fl y)*100,y) temp1 , humanPieces = replace 0 (getCoords (x + (fl y)*100)) temp2  })
 			else
 				computerTurn(game)
 		else
@@ -259,9 +263,9 @@ transformGame (EventKey (SpecialKey KeyDown) Up _ _ ) game =
 					if fst ((gameBoard game)!!1) == -1 then
 	      	computerTurn $ killCompPieces 1 (game { gameBoard = replace 1 (9,0) temp1 , humanPieces = replace 1 (getCoords 9) temp2  })
 					else
-					computerTurn $ killCompPieces 1 (game { gameBoard = replace 1 (x,y) temp1 , humanPieces = replace 1 (getCoords (x + (fl y)*100)) temp2  })
+					computerTurn $ killCompPieces 1 (game { gameBoard = replace 1 (x + (fl y)*100,y) temp1 , humanPieces = replace 1 (getCoords (x + (fl y)*100)) temp2  })
 			else if fst ((gameBoard game)!!1) /= -1 then
-				computerTurn $ killCompPieces 1  (game { gameBoard = replace 1 (x,y) temp1 , humanPieces = replace 1 (getCoords (x + (fl y)*100)) temp2  })
+				computerTurn $ killCompPieces 1  (game { gameBoard = replace 1 (x + (fl y)*100,y) temp1 , humanPieces = replace 1 (getCoords (x + (fl y)*100)) temp2  })
 			else
 				computerTurn(game)
 		else
@@ -281,9 +285,9 @@ transformGame (EventKey (SpecialKey KeyLeft) Up _ _ ) game =
 					if fst ((gameBoard game)!!2) == -1 then
 	      	computerTurn $ killCompPieces 2 (game { gameBoard = replace 2 (9,0) temp1 , humanPieces = replace 2 (getCoords 9) temp2  })
 					else
-					computerTurn $ killCompPieces 2 (game { gameBoard = replace 2 (x,y) temp1 , humanPieces = replace 2 (getCoords (x + (fl y)*100)) temp2  })
+					computerTurn $ killCompPieces 2 (game { gameBoard = replace 2 (x + (fl y)*100,y) temp1 , humanPieces = replace 2 (getCoords (x + (fl y)*100)) temp2  })
 			else if fst ((gameBoard game)!!2) /= -1 then
-				computerTurn $ killCompPieces 2 (game { gameBoard = replace 2 (x,y) temp1 , humanPieces = replace 2 (getCoords (x + (fl y)*100)) temp2  })
+				computerTurn $ killCompPieces 2 (game { gameBoard = replace 2 (x + (fl y)*100,y) temp1 , humanPieces = replace 2 (getCoords (x + (fl y)*100)) temp2  })
 			else
 				computerTurn(game)
 		else
@@ -303,9 +307,9 @@ transformGame (EventKey (SpecialKey KeyRight) Up _ _ ) game =
 					if fst ((gameBoard game)!!3) == -1 then
 	      	computerTurn $ killCompPieces 3 (game { gameBoard = replace 3 (9,0) temp1 , humanPieces = replace 3 (getCoords 9) temp2  })
 					else
-					computerTurn $ killCompPieces 3 (game { gameBoard = replace 3 (x,y) temp1 , humanPieces = replace 3 (getCoords (x + (fl y)*100)) temp2  })
+					computerTurn $ killCompPieces 3 (game { gameBoard = replace 3 (x + (fl y)*100,y) temp1 , humanPieces = replace 3 (getCoords (x + (fl y)*100)) temp2  })
 			else if fst ((gameBoard game)!!3) /= -1 then
-				computerTurn $ killCompPieces 3  (game { gameBoard = replace 3 (x,y) temp1 , humanPieces = replace 3 (getCoords (x + (fl y)*100)) temp2  })
+				computerTurn $ killCompPieces 3  (game { gameBoard = replace 3 (x + (fl y)*100,y) temp1 , humanPieces = replace 3 (getCoords (x + (fl y)*100)) temp2  })
 			else
 				computerTurn(game)
 		else
@@ -323,7 +327,7 @@ transformGame (EventKey (SpecialKey KeyTab) Up _ _ ) game = computerTurn game
 transformGame (EventKey (SpecialKey KeySpace) Up _ _ ) game =
    	case gameState game of
        Running -> tossDice game
-       GameOver _ -> initialGame
+       GameOver _ -> game
 
 
 transformGame _ game = game

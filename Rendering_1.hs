@@ -48,29 +48,31 @@ tiles =
   verticalLines
   ]
 
+whiteCircle = color (makeColorI 255 255 255 200) $ circleSolid 20
+
 hpiece :: Picture
 hpiece = color (makeColorI 0 0 100 200) ( circleSolid 15)
 
-hpiece1 :: Picture 
+hpiece1 :: Picture
 hpiece1 = pictures[
                     color (makeColorI 0 0 100 200) ( circleSolid 15),
                     color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "1")))
                     ]
-hpiece2 :: Picture 
+hpiece2 :: Picture
 hpiece2 = pictures[
                     color (makeColorI 0 0 100 200) ( circleSolid 15),
                     color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "2")))
                     ]
-hpiece3 :: Picture 
+hpiece3 :: Picture
 hpiece3 = pictures[
                     color (makeColorI 0 0 100 200) ( circleSolid 15),
                     color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "3")))
                     ]
-hpiece4 :: Picture 
+hpiece4 :: Picture
 hpiece4 = pictures[
                     color (makeColorI 0 0 100 200) ( circleSolid 15),
                     color (makeColorI 255 255 255 200) (translate (-6) (-8) (scale 0.175 0.175 (text "4")))
-                    ]                    
+                    ]
 
 
 compiece :: Picture
@@ -102,6 +104,15 @@ compiece4 = pictures[
                     ]
 
 
+circles1 =
+  pictures
+  $ concatMap (\i -> [translate (toFloat (fst (getHomeCoords 0 i))) (toFloat (snd (getHomeCoords 0 i))) whiteCircle ])
+    [1,2,3,4]
+
+circles2 =
+  pictures
+  $ concatMap (\i -> [translate (toFloat (fst (getHomeCoords 1 i))) (toFloat (snd (getHomeCoords 1 i))) whiteCircle ])
+    [1,2,3,4]
 
 boardGrid :: Picture
 boardGrid =
@@ -119,6 +130,8 @@ boardGrid =
        color (makeColorI 255 0 0 200) ( polygon [(320,40),(240,40),(240,80),(280,80),(280,240),(320,240)]),
        color (makeColorI 0 0 255 200) ( polygon [(560,320),(560,240),(520,240),(520,280),(360,280),(360,320)]),
        color (makeColorI 255 255 0 200) ( polygon [(280,560),(360,560),(360,520),(320,520),(320,360),(280,360)]),
+       circles1,
+       circles2,
        tiles
        --translate (420, 80) hpiece,
        --translate 80 420 compiece
@@ -165,9 +178,16 @@ boardAsRunningPicture game =
         dieDisplay game
 			]
 
+boardAsGameOver winner
+  | winner == Human = translate 50 250 $ color (makeColorI 0 0 0 200) $ scale 0.5 0.5 $ text "Human Won!!"
+  | winner == Computer = translate 50 250 $ color (makeColorI 0 0 0 200) $ scale 0.5 0.5 $ text "Computer Won!!"
+
+
 gameAsPicture::Game->Picture
 
 gameAsPicture game = translate (fromIntegral screenWidth * (-0.5))
                                (fromIntegral screenHeight * (-0.5))
                                frame
-    where frame = boardAsRunningPicture game
+    where frame = case gameState game of
+                    Running -> boardAsRunningPicture game
+                    GameOver winner -> boardAsGameOver winner
