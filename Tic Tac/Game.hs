@@ -6,7 +6,7 @@ data Player = PlayerX | PlayerO deriving (Eq, Show)
 type Cell = Maybe Player
 data PlayerA = Player_X | Player_O | Tie  deriving (Eq, Show)
 type CellA = Maybe PlayerA
-data State = Running | GameOver (Maybe Player) deriving (Eq, Show)
+data State = Running | GameOver (Maybe PlayerA) deriving (Eq, Show)
 
 type Board = Array (Int, Int) Cell
 type BBoard = Array (Int,Int) CellA
@@ -36,7 +36,7 @@ initialGame = Game { gameBoard = array indexRange $ zip (range indexRange) (repe
 				   , bigBoard = array iRange $ zip (range iRange) (repeat Nothing)
 				   , prevMove = (-1,-1)
 				   , currentBox = (-1,-1)
-                   , gamePlayer = PlayerO
+                   , gamePlayer = PlayerX
                    , gameState = Running
                    }
     where indexRange = ((0, 0), (8, 8))
