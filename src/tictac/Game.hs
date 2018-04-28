@@ -8,10 +8,13 @@ data PlayerA = Player_X | Player_O | Tie  deriving (Eq, Show)
 type CellA = Maybe PlayerA
 data State = Running | GameOver (Maybe PlayerA) deriving (Eq, Show)
 
+-- | Stores 9 x 9 game board
 type Board = Array (Int, Int) Cell
+
+-- | Stores 3 x 3 Big Game Board
 type BBoard = Array (Int,Int) CellA
 
-
+-- | Stores Game State
 data Game = Game { gameBoard :: Board
 				 , bigBoard :: BBoard
 				 , prevMove :: (Int,Int)
@@ -20,7 +23,6 @@ data Game = Game { gameBoard :: Board
                  , gameState :: State
                  , flag :: Int
                  } deriving (Eq, Show)
-
 
 screenWidth :: Int
 screenWidth = 540
@@ -34,6 +36,7 @@ cellWidth = 60
 cellHeight :: Float
 cellHeight = 60
 
+-- | Initial Game state
 initialGame = Game { gameBoard = array indexRange $ zip (range indexRange) (repeat Nothing)
 				   , bigBoard = array iRange $ zip (range iRange) (repeat Nothing)
 				   , prevMove = (-1,-1)
