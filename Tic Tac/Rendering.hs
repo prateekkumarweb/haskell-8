@@ -16,6 +16,7 @@ boardAsRunningPicture game =
                 color playerOColor $ oCellsOfBoard board,
                 color playerXColor $ xbigBoard bBoard,
                 color playerOColor $ obigBoard bBoard,
+                dieDisplay game,
                 boardAsGrid
              ]
     where board = gameBoard game
@@ -93,6 +94,17 @@ verticalLines =
   pictures
   $ concatMap (\i -> [line [(60*i,0),(60*i,540)]])
     [0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0]
+
+intToString :: Int -> String
+intToString n = "." ++ show n ++ "."
+
+dieDisplay :: Game -> Picture
+dieDisplay game =
+    pictures[
+              color (makeColorI 0 0 0 200) ( polygon [(450,450),(510,450),(510,510),(450,510)]),
+              translate 355 460 (color (makeColorI 0 255 255 200) ( scale 0.4 0.4 (text $ intToString (fst (prevMove game) )))),
+              translate 455 460 (color (makeColorI 255 255 255 200) ( scale 0.4 0.4 (text $ intToString (snd (prevMove game) ))))
+            ]
 
 mainGrid :: Picture
 mainGrid =

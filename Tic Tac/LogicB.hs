@@ -8,20 +8,20 @@ import Graphics.Gloss.Interface.Pure.Game
 
 isCoordCorrect = inRange ((0, 0), (8, 8))
 
-fl:: Int -> Int
+fl :: Int -> Int
 fl i 
-  | i<3 = 0
-  | i<6 = 1
+  |i < 3 = 0
+  | i< 6 = 1
   | otherwise = 2
 
 isBoxCorrect :: Game -> (Int,Int) -> Bool
 isBoxCorrect game cellCoord =
   if fst (prevMove game) == -1 && snd (prevMove game) == -1 then True
-  else if ((bBoard ! ((fl (fst mv)),(fl (snd mv)))) == Just Player_X) || ((bBoard ! ((fl (fst mv)),(fl (snd mv)))) == Just Player_O) then
+  else if ((bBoard ! ((mod (fst mv) 3),(mod (snd mv) 3))) == Just Player_X) || ((bBoard ! ((mod (fst mv) 3),(mod (snd mv) 3))) == Just Player_O) then
         if ((bBoard ! ((fl (fst cellCoord)),(fl (snd cellCoord)))) == Just Player_X) || ((bBoard ! ((fl (fst cellCoord)),(fl (snd cellCoord)))) == Just Player_O) then False 
         else True
   else 
-      if ((bBoard ! ((fl (fst cellCoord)),(fl (snd cellCoord)))) == Just Player_X )|| ((bBoard ! ((fl (fst cellCoord)),(fl (snd cellCoord)))) == Just Player_O) then False 
+      if ((bBoard ! ((fl (fst cellCoord)),(fl (snd cellCoord)))) == Just Player_X )|| ((bBoard ! ((fl (fst cellCoord)),(fl (snd cellCoord) ))) == Just Player_O) then False 
       else if fst cellCoord >= 3 * (mod (fst (prevMove game)) 3) && fst cellCoord < 3*(1 + (mod (fst (prevMove game)) 3))
             && snd cellCoord >= 3*(mod (snd (prevMove game)) 3) && snd cellCoord < 3*(1 + (mod (snd (prevMove game)) 3))
             then True
@@ -107,9 +107,10 @@ playerTurn game cellCoord
                , currentBox =  whichBox cellCoord
                , prevMove = cellCoord
                }
-    | otherwise = game
+    | otherwise = game { flag = (temp + 1) }
     where board = gameBoard game
           player = gamePlayer game
+          temp = flag game
 
 mousePosAsCellCoord :: (Float, Float) -> (Int, Int)
 mousePosAsCellCoord (x, y) = ( floor ((y + (540 * 0.5)) / 60)

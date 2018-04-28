@@ -11,12 +11,14 @@ data State = Running | GameOver (Maybe PlayerA) deriving (Eq, Show)
 type Board = Array (Int, Int) Cell
 type BBoard = Array (Int,Int) CellA
 
+
 data Game = Game { gameBoard :: Board
 				 , bigBoard :: BBoard
 				 , prevMove :: (Int,Int)
 				 , currentBox :: (Int, Int)
                  , gamePlayer :: Player
                  , gameState :: State
+                 , flag :: Int
                  } deriving (Eq, Show)
 
 
@@ -38,6 +40,7 @@ initialGame = Game { gameBoard = array indexRange $ zip (range indexRange) (repe
 				   , currentBox = (-1,-1)
                    , gamePlayer = PlayerX
                    , gameState = Running
+                   , flag = 0
                    }
     where indexRange = ((0, 0), (8, 8))
     	  iRange = ((0,0),(2,2))
