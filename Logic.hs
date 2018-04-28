@@ -256,7 +256,7 @@ killComp i j game =
 -- | Function to floor of a/b where a and b are integer parameters
 fl :: Int -> Int
 fl i
-	| i <= 53 = 0
+	| i <= 52 = 0
 	|otherwise = 1
 
 -- | Function to move Piece 1 of human
