@@ -4,7 +4,7 @@ import Data.Array
 import Graphics.Gloss
 import Graphics.Gloss.Data.Color
 
-import Rendering_1
+import Rendering
 import Game
 import Logic
 
