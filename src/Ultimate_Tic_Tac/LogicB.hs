@@ -106,8 +106,6 @@ checkGameOver:: Game -> Game
 checkGameOver game 
     | Just p <- winnerGame game =
         game { gameState = GameOver $ Just p }
-   -- | countCells Nothing board == 0 =
-      --  game { gameState = GameOver Nothing }
     | otherwise = game
     where board = bigBoard game
 
