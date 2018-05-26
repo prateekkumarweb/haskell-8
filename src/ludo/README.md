@@ -21,7 +21,7 @@ cabal install gloss
 * Use the given Command to Compile the Source Code
 
 ```
- ghc -o -l Main.hs
+ ghc -o l Main.hs
  ```
 * After compiling , use the given Command to Run the Game. 
 
